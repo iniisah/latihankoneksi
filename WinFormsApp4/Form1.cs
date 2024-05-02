@@ -19,30 +19,48 @@ namespace WinFormsApp4
 
             using (NpgsqlConnection connection = new NpgsqlConnection(connectionString))
             {
-                string sql = "INSERT INTO dataperson (Nama, Alamat) VALUES (@Nama, @Alamat)";
-                using (NpgsqlCommand command = new NpgsqlCommand(sql, connection))
+                if (!string.IsNullOrWhiteSpace(nama) && !string.IsNullOrWhiteSpace(alamat))
                 {
-                    command.Parameters.AddWithValue("@Nama", nama);
-                    command.Parameters.AddWithValue("@Alamat", alamat);
 
-                    connection.Open();
-
-                    int rowsAffected = command.ExecuteNonQuery();
-
-
-                    if (rowsAffected > 0)
+                    string sql = "INSERT INTO dataperson (Nama, Alamat) VALUES (@Nama, @Alamat)";
+                    using (NpgsqlCommand command = new NpgsqlCommand(sql, connection))
                     {
-                        MessageBox.Show("Data berhasil dimasukkan ke dalam database.");
+                        command.Parameters.AddWithValue("@Nama", nama);
+                        command.Parameters.AddWithValue("@Alamat", alamat);
+
+                        connection.Open();
+
+                        int rowsAffected = command.ExecuteNonQuery();
+
+
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("Data berhasil dimasukkan ke dalam database.");
+                            textBox1.Text = "";
+                            textBox2.Text = "";
+
+                        }
+                        else
+                        {
+                            MessageBox.Show("Gagal memasukkan data ke dalam database.");
+                        }
+
                     }
-                    else
-                    {
-                        MessageBox.Show("Gagal memasukkan data ke dalam database.");
-                    }
+                }
+                else
+                {
+                    MessageBox.Show("data belum dimasukkan!");
 
                 }
 
             }
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            textBox1.Text = "";
+            textBox2.Text = "";
+
+        }
     }
 }
